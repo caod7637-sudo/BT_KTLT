@@ -7,15 +7,6 @@ Obstacle::Obstacle(float x, float y, float width, float height, Type type, QObje
     m_lane(0),
     m_speed(0)
 {
-}#include "obstacle.h"
-#include <QPointF>
-#include "entity.h"
-
-Obstacle::Obstacle(float x, float y, float width, float height, Type type, QObject *parent)
-    : QObject(parent), Entity(x, y, width, height), m_type(type),
-    m_lane(0),
-    m_speed(0)
-{
 }
 
 float Obstacle::getWidth() const { return m_width; }
