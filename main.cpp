@@ -16,5 +16,6 @@ int main(int argc, char *argv[]) {
     if (engine.rootObjects().isEmpty())
         return -1;
 
+    // 🌟 THÊM LỆNH NÀY VÀO ĐỂ GIỮ CHƯƠNG TRÌNH CHẠY
     return app.exec();
 }
