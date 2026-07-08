@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick 2.15
+import QtMultimedia
 
 Item {
     id: gameRoot
@@ -11,9 +12,10 @@ Item {
 
     property int scrollSpeed: 5
     property var lanePositions: [131, 200, 229]
-    property int currentLaneIndex: 0 // LƯU Ý: ĐÂY LÀ 3 LÀN ĐƯỜNG
+    property int currentLaneIndex: 1 // LƯU Ý: ĐÂY LÀ 3 LÀN ĐƯỜNG
 
     signal startGame()
+    signal returnToMenu()
 
     // --- BACKGROUND TỰ CUỘN ---
     Image {
@@ -64,7 +66,7 @@ Item {
             NumberAnimation { duration: 120; easing.type: Easing.OutQuad }
         }
 
-        // 🔴 TEST VA CHẠM (XE PLAYER)
+        // 🔴 MẮT THẦN TEST VA CHẠM (XE PLAYER)
         Rectangle {
             anchors.fill: parent
             anchors.margins: 10 // Số lượng pixel bị gọt (Sửa số này để test)
@@ -76,9 +78,11 @@ Item {
 
     // --- VẬT CẢN ---
     Repeater {
+            // 1. 🌟 ĐỔI PROPERTY: Từ 'gameEngine.obstacles' thành 'gameEngine.obstacleModel'
             model: gameEngine.obstacleModel
 
             Image {
+                // 2. 🌟 THAY 'modelData' THÀNH 'obstacle' (Tên role bạn định nghĩa trong C++)
                 x: obstacle.x
                 y: obstacle.y
                 width: obstacle.getWidth()
@@ -94,6 +98,7 @@ Item {
                     }
                 }
 
+                // Mắt thần hitbox vật cản (đã gọt 15px như xe player)
                 Rectangle {
                     anchors.fill: parent
                     anchors.margins: 15
@@ -122,6 +127,7 @@ Item {
 
             MouseArea { anchors.fill: parent }
 
+            // Ảnh chữ GAME OVER - Ép đầy khung để giữ nguyên vị trí vẽ gốc
             Image {
                 id: gameOverTitle
                 source: "assets/over.png"
@@ -129,6 +135,7 @@ Item {
                 fillMode: Image.PreserveAspectFit
             }
 
+            // Ảnh nút RESTART - Ép đầy khung để giữ nguyên vị trí vẽ gốc
             Image {
                 id: restartBtn
                 source: "assets/replay.png"
@@ -141,10 +148,12 @@ Item {
                     onClicked: {
                         gameOverOverlay.visible = false
                         gameEngine.startGame()
+                        bgMusic.play()
                     }
                 }
             }
 
+            // Ảnh nút EXIT - Ép đầy khung để giữ nguyên vị trí vẽ gốc
             Image {
                 id: exitBtn
                 source: "assets/exit.png"
@@ -154,11 +163,15 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked: Qt.quit()
+                    onClicked: {
+                        // 🌟 THAY VÌ THOÁT GAME (Qt.quit()), BẠN GỌI CÁC LỆNH SAU:
+                        bgMusic.stop()            // 1. Tắt nhạc game
+                        gameOverOverlay.visible = false // 2. Ẩn màn hình Game Over đi
+                        gameRoot.returnToMenu()   // 3. Phát tín hiệu đòi về Menu
+                    }
                 }
-          }
-    }
-
+            }
+        }
     // --- ĐIỀU KHIỂN BÀN PHÍM ---
     Keys.onPressed: (event) => {
         if (event.key === Qt.Key_Left) {
