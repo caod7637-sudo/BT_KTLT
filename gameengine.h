@@ -9,6 +9,12 @@
 
 class GameEngine : public QObject {
     Q_OBJECT
+    // 🌟 ĐÃ SỬA: thay QList<QObject*> obstacles bằng ObstacleModel (QAbstractListModel)
+    // -> Repeater trong QML sẽ chỉ thêm/xoá đúng 1 delegate mỗi khi có xe spawn/despawn,
+    //    thay vì huỷ + build lại toàn bộ danh sách -> hết giật/lag.
+    Q_PROPERTY(QObject* obstacleModel READ getObstacleModel CONSTANT)
+    Q_PROPERTY(int playerScore READ getPlayerScore NOTIFY scoreChanged)
+    Q_PROPERTY(bool gameOver READ isGameOver NOTIFY gameOverChanged)
 
 public:
     explicit GameEngine(QObject *parent = nullptr);
@@ -33,6 +39,8 @@ public:
 signals:
     void scoreChanged(int newScore);
     void gameOverChanged();
+    void coinCollected();
+    void crashed();
 
 private slots:
     void updateGameTick();
@@ -46,6 +54,7 @@ private:
     ObstacleModel *m_obstacleModel;
     int m_scrollSpeed = 6;
     int m_playerScore;
+    int m_distanceTraveled;
     bool m_isGameOver;
     int m_spawnCounter;
     int m_dynamicSpawnLimit;
