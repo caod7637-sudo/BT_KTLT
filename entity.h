@@ -6,6 +6,7 @@
 
 class Entity {
 protected:
+    // Dùng protected thay vì private để các lớp con (Car, Obstacle) có thể xài ké các biến này
     float m_x;       // Tọa độ trục X (vị trí ngang của vật thể trên màn hình)
     float m_y;       // Tọa độ trục Y (vị trí dọc của vật thể trên màn hình)
     float m_width;   // Chiều rộng của vật thể (tính bằng pixel)
