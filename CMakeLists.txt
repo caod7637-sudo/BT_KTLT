@@ -42,6 +42,12 @@ qt_add_qml_module(appCarGame
         assets/exit.png
         assets/replay.png
         assets/over.png
+        assets/coin.png
+        assets/barrie.png
+        sounds/crash.wav
+        sounds/game.wav
+        sounds/start.wav
+        sounds/coin.mp3
 )
 
 set_target_properties(appCarGame PROPERTIES
