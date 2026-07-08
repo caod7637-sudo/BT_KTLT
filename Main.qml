@@ -23,23 +23,21 @@ ApplicationWindow {
         onStartGame: {
             menuView.visible = false
             gameView.visible = true
-
-
+            gameEngine.startGame()
         }
     }
-
 
     GameView {
         id: gameView
         anchors.fill: parent
         visible: false
-        // Mẹo nhỏ: Nếu sau này trong GameView làm thêm nút "Quay lại Menu"
-        // và phát ra một cái signal tên là backToMenu(), thì viết thêm đoạn này:
+    }
+        // Mẹo nhỏ: Nếu sau này trong GameView mắm làm thêm nút "Quay lại Menu"
+        // và phát ra một cái signal tên là backToMenu(), thì mắm viết thêm đoạn này:
         /*
         onBackToMenu: {
             gameView.visible = false
             menuView.visible = true
         }
         */
-    }
 }
