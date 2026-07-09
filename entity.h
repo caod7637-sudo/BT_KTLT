@@ -19,6 +19,10 @@ public:
     // Hàm hủy ảo (virtual destructor) - bắt buộc phải có khi chơi hệ kế thừa OOP để tránh rò rỉ bộ nhớ
     virtual ~Entity() = default;
 
+    // 🌟 ĐÃ THÊM: 2 hàm Set để nhận tọa độ cập nhật liên tục từ QML
+    void setX(float newX) { m_x = newX; }
+    void setY(float newY) { m_y = newY; }
+
     // Hàm cập nhật vị trí dịch chuyển theo trục Y khi xe địch hoặc vật cản lao xuống đáy màn hình
     virtual void updatePosition(int dy);
 
